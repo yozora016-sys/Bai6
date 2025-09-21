@@ -90,20 +90,6 @@ Gửi địa chỉ chip ở mode đọc.
 
 Disable ACK, STOP.
 
-3.3 Ghi nhiều byte
-void EEPROM_WriteBuffer(uint16_t addr, uint8_t *buf, uint16_t len)
-
-
-Giống ghi 1 byte nhưng sau khi gửi địa chỉ ô nhớ thì gửi liên tiếp các byte trong buf.
-
-Lưu ý AT24C256 có page write limit (64 bytes/page). Code này chưa xử lý vụ “cắt trang” – nếu len > 64 thì có thể lỗi.
-
-3.4 Đọc nhiều byte
-void EEPROM_ReadBuffer(uint16_t addr, uint8_t *buf, uint16_t len)
-
-
-Gửi địa chỉ trước, repeated START, chuyển sang mode nhận, sau đó đọc len byte.
-
 4. Hàm hỗ trợ USART & Delay
 4.1 Gửi chuỗi USART
 void USART_SendString(char *str)
@@ -130,7 +116,7 @@ I2C_Config();
 
 Khởi tạo hệ thống và ngoại vi.
 
-USART_SendString("Test EEPROM AT24C256 via I2C\r\n");
+USART_SendString("Test\r\n");
 
 
 In ra PC để báo bắt đầu.
@@ -147,16 +133,6 @@ Ghi ký tự ‘X’ vào ô nhớ 0x10.
 Đợi 10ms (EEPROM cần thời gian ghi).
 
 Đọc lại byte vừa ghi.
-
-Test ghi nhiều byte:
-
-uint8_t msg[] = "Hello EEPROM 24C256!";
-EEPROM_WriteBuffer(0x0020, msg, strlen((char*)msg));
-DelayMs(20);
-EEPROM_ReadBuffer(0x0020, readbuf, strlen((char*)msg));
-
-
-Ghi chuỗi vào EEPROM từ địa chỉ 0x20.
 
 Đọc lại vào readbuf và in ra.
 
